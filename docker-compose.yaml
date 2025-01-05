@@ -1,0 +1,40 @@
+version: "3.8"
+services:
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend:/var/www
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_CONNECTION=mongodb
+      - DB_HOST=db
+      - DB_PORT=27017
+      - DB_DATABASE=sysEye
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - DB_AUTH_DATABASE=admin
+    depends_on:
+      - db
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "3000:3000"
+    environment:
+      - BACKEND_API_URL=http://backend:8000
+    depends_on:
+      - backend
+  db:
+    image: mongo:6
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+      - ./db:/data/db
+    ports:
+      - "27017:27017"
+
+volumes:
+  mongodb_data:
