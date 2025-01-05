@@ -28,7 +28,7 @@ Docker Compose is used to orchestrate the services and run the application local
 Once the containers are up, you can access each service via the following URLs:
 
 ### Backend (Laravel API)
-- URL: http://localhost:8000
+URL: http://localhost:8000
 ### Frontend (Next.js)
 URL: http://localhost:3000
 ### MongoDB (Database)
