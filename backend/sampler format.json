@@ -1,0 +1,87 @@
+{
+    "sampleTime": {
+        "iso": "2025-01-07T01:40:18+01:00",
+        "custom": "2025-01-07 01:40:18 +01"
+    },
+    "systemTime": {
+        "iso": "2025-01-07T01:40:18+01:00",
+        "custom": "2025-01-07 01:40:18 +01"
+    },
+    "networkInterfaces": [
+        {
+            "speed": 1048576000,
+            "interface_name": "ens33"
+        }
+    ],
+    "processCount": {
+        "total": 285,
+        "running": 0,
+        "sleeping": 198,
+        "thread": 621
+    },
+    "fileSystems": [
+        {
+            "device_name": "/dev/sda2",
+            "fs_type": "ext4",
+            "mnt_point": "/",
+            "size": 20954300416,
+            "used": 11144077312,
+            "free": 8719863808
+        },
+        {
+            "device_name": "/dev/sr0",
+            "fs_type": "iso9660",
+            "mnt_point": "/media/oussama/CDROM",
+            "size": 92246016,
+            "used": 92246016,
+            "free": 0
+        },
+        {
+            "device_name": "/dev/sr1",
+            "fs_type": "iso9660",
+            "mnt_point": "/media/oussama/Ubuntu 24.04.1 LTS amd64",
+            "size": 6203355136,
+            "used": 6203355136,
+            "free": 0
+        }
+    ],
+    "memory": {
+        "total": 4056055808,
+        "used": 1149747200,
+        "free": 2906308608
+    },
+    "systemInfo": {
+        "os_name": "Linux",
+        "hostname": "oussama-VMware-Virtual-Platform",
+        "platform": "64bit",
+        "os_version": "6.8.0-51-generic",
+        "linux_distro": "Ubuntu 24.04",
+        "hr_name": "Ubuntu 24.04 64bit / Linux 6.8.0-51-generic"
+    },
+    "cpu": {
+        "min1": 0.080078125,
+        "min5": 0.0166015625,
+        "min15": 0.00537109375,
+        "total": 1.1,
+        "user": 0.5,
+        "system": 0.6,
+        "idle": 98.9,
+        "cpucore": 2
+    },
+    "gpu": [
+        {
+            "gpu_id": "id",
+            "gpu_name": "name",
+            "mem": 0,
+            "proc": 0,
+            "temperature": 0,
+            "fan_speed": 0
+        }
+    ],
+    "uptime": "0:43:14",
+    "swapMemory": {
+        "total": 3948933120,
+        "used": 0,
+        "free": 3948933120
+    }
+}

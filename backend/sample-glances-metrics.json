@@ -1,0 +1,233 @@
+{
+    "ports": [
+        {
+            "host": "192.168.40.2",
+            "port": 0,
+            "description": "DefaultGateway",
+            "refresh": 30,
+            "timeout": 3,
+            "status": 0.30232,
+            "rtt_warning": null,
+            "indice": "port_0",
+            "key": "indice"
+        }
+    ],
+    "sensors": [],
+    "wifi": [],
+    "now": {
+        "iso": "2025-01-07T01:40:18+01:00",
+        "custom": "2025-01-07 01:40:18 +01"
+    },
+    "network": [
+        {
+            "bytes_sent": 24045,
+            "bytes_recv": 2591,
+            "speed": 1048576000,
+            "key": "interface_name",
+            "interface_name": "ens33",
+            "alias": null,
+            "bytes_all": 26636,
+            "time_since_update": 457.625806570053,
+            "bytes_recv_gauge": 11871636,
+            "bytes_recv_rate_per_sec": 5,
+            "bytes_sent_gauge": 131825,
+            "bytes_sent_rate_per_sec": 52,
+            "bytes_all_gauge": 12003461,
+            "bytes_all_rate_per_sec": 58
+        }
+    ],
+    "processcount": {
+        "total": 285,
+        "running": 0,
+        "sleeping": 198,
+        "thread": 621,
+        "pid_max": 0
+    },
+    "fs": [
+        {
+            "device_name": "/dev/sda2",
+            "fs_type": "ext4",
+            "mnt_point": "/",
+            "size": 20954300416,
+            "used": 11144077312,
+            "free": 8719863808,
+            "percent": 56.1,
+            "key": "mnt_point"
+        },
+        {
+            "device_name": "/dev/sr0",
+            "fs_type": "iso9660",
+            "mnt_point": "/media/oussama/CDROM",
+            "size": 92246016,
+            "used": 92246016,
+            "free": 0,
+            "percent": 100,
+            "key": "mnt_point"
+        },
+        {
+            "device_name": "/dev/sr1",
+            "fs_type": "iso9660",
+            "mnt_point": "/media/oussama/Ubuntu 24.04.1 LTS amd64",
+            "size": 6203355136,
+            "used": 6203355136,
+            "free": 0,
+            "percent": 100,
+            "key": "mnt_point"
+        }
+    ],
+    "mem": {
+        "total": 4056055808,
+        "available": 2906308608,
+        "percent": 28.3,
+        "used": 1149747200,
+        "free": 2906308608,
+        "active": 1128415232,
+        "inactive": 272412672,
+        "buffers": 49373184,
+        "cached": 949866496,
+        "shared": 28053504
+    },
+    "system": {
+        "os_name": "Linux",
+        "hostname": "oussama-VMware-Virtual-Platform",
+        "platform": "64bit",
+        "os_version": "6.8.0-51-generic",
+        "linux_distro": "Ubuntu 24.04",
+        "hr_name": "Ubuntu 24.04 64bit / Linux 6.8.0-51-generic"
+    },
+    "diskio": [
+        {
+            "read_count": 0,
+            "write_count": 0,
+            "read_bytes": 0,
+            "write_bytes": 0,
+            "key": "disk_name",
+            "disk_name": "fd0",
+            "time_since_update": 458.551644086838,
+            "read_count_gauge": 0,
+            "write_count_gauge": 0,
+            "read_bytes_gauge": 0,
+            "write_bytes_gauge": 0
+        },
+        {
+            "read_count": 0,
+            "write_count": 69,
+            "read_bytes": 0,
+            "write_bytes": 421888,
+            "key": "disk_name",
+            "disk_name": "sda",
+            "time_since_update": 458.551644086838,
+            "read_count_gauge": 17540,
+            "read_count_rate_per_sec": 0,
+            "write_count_gauge": 3502,
+            "write_count_rate_per_sec": 0,
+            "read_bytes_gauge": 809309184,
+            "read_bytes_rate_per_sec": 0,
+            "write_bytes_gauge": 101126144,
+            "write_bytes_rate_per_sec": 920
+        },
+        {
+            "read_count": 0,
+            "write_count": 0,
+            "read_bytes": 0,
+            "write_bytes": 0,
+            "key": "disk_name",
+            "disk_name": "sda1",
+            "time_since_update": 458.551644086838,
+            "read_count_gauge": 26,
+            "read_count_rate_per_sec": 0,
+            "write_count_gauge": 0,
+            "read_bytes_gauge": 106496,
+            "read_bytes_rate_per_sec": 0,
+            "write_bytes_gauge": 0
+        },
+        {
+            "read_count": 0,
+            "write_count": 69,
+            "read_bytes": 0,
+            "write_bytes": 421888,
+            "key": "disk_name",
+            "disk_name": "sda2",
+            "time_since_update": 458.551644086838,
+            "read_count_gauge": 17403,
+            "read_count_rate_per_sec": 0,
+            "write_count_gauge": 3502,
+            "write_count_rate_per_sec": 0,
+            "read_bytes_gauge": 806941696,
+            "read_bytes_rate_per_sec": 0,
+            "write_bytes_gauge": 101126144,
+            "write_bytes_rate_per_sec": 920
+        },
+        {
+            "read_count": 0,
+            "write_count": 0,
+            "read_bytes": 0,
+            "write_bytes": 0,
+            "key": "disk_name",
+            "disk_name": "sr0",
+            "time_since_update": 458.551644086838,
+            "read_count_gauge": 65,
+            "read_count_rate_per_sec": 0,
+            "write_count_gauge": 0,
+            "read_bytes_gauge": 2146304,
+            "read_bytes_rate_per_sec": 0,
+            "write_bytes_gauge": 0
+        },
+        {
+            "read_count": 0,
+            "write_count": 0,
+            "read_bytes": 0,
+            "write_bytes": 0,
+            "key": "disk_name",
+            "disk_name": "sr1",
+            "time_since_update": 458.551644086838,
+            "read_count_gauge": 78,
+            "read_count_rate_per_sec": 0,
+            "write_count_gauge": 0,
+            "read_bytes_gauge": 2148352,
+            "read_bytes_rate_per_sec": 0,
+            "write_bytes_gauge": 0
+        }
+    ],
+    "load": {
+        "min1": 0.080078125,
+        "min5": 0.0166015625,
+        "min15": 0.00537109375,
+        "cpucore": 2
+    },
+    "cpu": {
+        "total": 1.1,
+        "user": 0.5,
+        "nice": 0,
+        "system": 0.6,
+        "idle": 98.9,
+        "iowait": 0,
+        "irq": 0,
+        "steal": 0,
+        "guest": 0,
+        "ctx_switches": 40046,
+        "interrupts": 36198,
+        "soft_interrupts": 23773,
+        "syscalls": 0,
+        "cpucore": 2,
+        "time_since_update": 458.551744699478,
+        "ctx_switches_gauge": 463560,
+        "ctx_switches_rate_per_sec": 87,
+        "interrupts_gauge": 392848,
+        "interrupts_rate_per_sec": 78,
+        "soft_interrupts_gauge": 275465,
+        "soft_interrupts_rate_per_sec": 51,
+        "syscalls_gauge": 0
+    },
+    "gpu": [],
+    "uptime": "0:43:14",
+    "memswap": {
+        "total": 3948933120,
+        "used": 0,
+        "free": 3948933120,
+        "percent": 0,
+        "sin": 0,
+        "sout": 0,
+        "time_since_update": 458.519722700119
+    }
+}

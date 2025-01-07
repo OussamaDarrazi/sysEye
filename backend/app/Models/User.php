@@ -43,4 +43,10 @@ class User extends Eloquent  // Extend MongoDB Eloquent model
             'password' => 'hashed',
         ];
     }
+
+    public function nodes()
+    {
+        return $this->hasMany(Node::class);
+    }
+    
 }
