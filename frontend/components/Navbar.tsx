@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, LogOut } from "lucide-react";
 import Image from "next/image";
 import { AuthService } from "@/utils/auth";
@@ -10,7 +10,12 @@ import { useRouter } from "next/navigation";
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  const user = AuthService.getUser();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    setUser(AuthService.getUser());
+  }, []);
 
   const handleLogout = async () => {
     await AuthService.logout();
