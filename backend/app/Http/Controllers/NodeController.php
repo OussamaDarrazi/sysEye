@@ -26,7 +26,6 @@ class NodeController extends Controller
             'name' => 'required',
             'ip' => 'required',
             'exporter_port' => 'required',
-            'exporter' => 'required',
             'is_active' => 'required',
             'deactivate_on_unreachable' => 'required',
             'notify_on_unreachable' => 'required',
@@ -34,7 +33,7 @@ class NodeController extends Controller
         ]);
 
         $node = Node::create($request->all());
-        $node->user()->associate($request->user());
+        $node->user()->associate(auth('sanctum')->user());
         $node->save();
 
         return $node;
@@ -59,7 +58,6 @@ class NodeController extends Controller
             'name' => 'required|unique:nodes,name,'.$node->id,
             'ip' => 'required',
             'exporter_port' => 'required',
-            'exporter' => 'required',
             'is_active' => 'required',
             'deactivate_on_unreachable' => 'required',
             'notify_on_unreachable' => 'required',

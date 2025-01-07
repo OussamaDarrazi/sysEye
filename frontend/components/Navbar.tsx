@@ -2,10 +2,17 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Menu, LogOut } from "lucide-react";
+import { Menu, LogOut, ChevronDown, User  } from "lucide-react";
 import Image from "next/image";
 import { AuthService } from "@/utils/auth";
 import { useRouter } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,31 +49,43 @@ export function Navbar() {
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-6 font-semibold text-white/70 active:text-white py-8 text-sm">
-            <Link href="/dashboard" className="text-white/70 hover:text-white transition-colors">
-              Dashboard
-            </Link>
-            {user ? (
-              <>
-                <span className="text-white">{user.name}</span>
-                <button 
-                  onClick={handleLogout}
-                  className="flex items-center space-x-1 text-white/70 hover:text-white transition-colors"
-                >
-                  <LogOut className="w-4 h-4" />
-                  <span>Logout</span>
-                </button>
-              </>
-            ) : (
-              <>
-                <Link href="/login" className="text-white/70 hover:text-white transition-colors">
-                  Login
-                </Link>
-                <Link href="/register" className="text-white/70 hover:text-white transition-colors">
-                  Register
-                </Link>
-              </>
-            )}
-          </div>
+  <Link href="/dashboard" className="text-white/70 hover:text-white transition-colors">
+    Dashboard
+  </Link>
+  {user ? (
+    <DropdownMenu>
+      <DropdownMenuTrigger className="flex items-center space-x-2 focus:outline-none">
+        <span className="text-white">{user.name}</span>
+        <ChevronDown className="w-4 h-4 text-white/70" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56 bg-[#121212]/95 backdrop-blur-xl border-white/10">
+        <Link href="/profile">
+          <DropdownMenuItem className="text-white/70 focus:text-white focus:bg-white/10 cursor-pointer">
+            <User className="mr-2 h-4 w-4" />
+            <span>Profile</span>
+          </DropdownMenuItem>
+        </Link>
+        <DropdownMenuSeparator className="bg-white/10" />
+        <DropdownMenuItem 
+          onClick={handleLogout}
+          className="text-white/70 focus:text-white focus:bg-white/10 cursor-pointer"
+        >
+          <LogOut className="mr-2 h-4 w-4" />
+          <span>Logout</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  ) : (
+    <>
+      <Link href="/login" className="text-white/70 hover:text-white transition-colors">
+        Login
+      </Link>
+      <Link href="/register" className="text-white/70 hover:text-white transition-colors">
+        Register
+      </Link>
+    </>
+  )}
+</div>
 
           {/* Mobile Menu Button */}
           <button
