@@ -1,10 +1,31 @@
+'use client';
 import Link from "next/link";
 import Image from "next/image";
 import grid from "../../public/Grid.png";
+import { useState } from 'react';
+import { AuthService } from '@/utils/auth';
+import { useRouter } from 'next/navigation';
 
 import React from 'react';
 
 const Page = () => { 
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await AuthService.login(formData);
+      router.push('/dashboard');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      setError(err.message || 'Login failed');
+    }
+  };
     return (
         <div className="min-h-screen bg-[#121212] text-white relative">
       {/* Background Image */}
@@ -39,7 +60,7 @@ const Page = () => {
             <h1 className="text-4xl font-bold text-center mb-6 bg-clip-text text-white/80">
               Login
             </h1>
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-300">
                   Email Address
@@ -49,6 +70,8 @@ const Page = () => {
                   id="email"
                   className="mt-1 block w-full px-4 py-2 text-sm bg-white/10 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                   placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
                 />
               </div>
 
@@ -61,9 +84,11 @@ const Page = () => {
                   id="password"
                   className="mt-1 block w-full px-4 py-2 text-sm bg-white/10 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                   placeholder="Enter your password"
+                  value={formData.password}
+                  onChange={(e) => setFormData({...formData, password: e.target.value})}
                 />
               </div>
-
+              {error && <div className="error">{error}</div>}
               <button
                 type="submit"
                 className="w-full py-2.5 rounded-lg bg-purple-500 hover:bg-purple-600 text-white font-medium text-sm transition-all"

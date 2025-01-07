@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     public function register(Request $request)
@@ -32,22 +31,18 @@ class AuthController extends Controller
             'email' => 'required|email|exists:users',
             'password' => 'required'
         ]);
-
-        $user = User::where('email', $request->email)->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return [
+    
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return response()->json([
                 'errors' => [
                     'email' => ['The provided credentials are incorrect.']
                 ]
-            ];
-            // return [
-            //     'message' => 'The provided credentials are incorrect.' 
-            // ];
+            ], 401);
         }
-
+    
+        $user = User::where('email', $request->email)->first();
         $token = $user->createToken($user->name);
-
+    
         return [
             'user' => $user,
             'token' => $token->plainTextToken

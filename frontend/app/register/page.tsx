@@ -1,8 +1,36 @@
+'use client';
+
 import Link from "next/link";
 import Image from "next/image";
 import grid from "../../public/Grid.png";
+import { useState } from "react";
+import { AuthService } from "@/utils/auth";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
+
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: ''
+  });
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await AuthService.register(formData);
+      router.push('/dashboard'); // Redirect after successful registration
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      setError(err.message || 'Registration failed');
+    }
+  };
+
+
+
   return (
     <div className="min-h-screen bg-[#121212] text-white relative">
       {/* Background Image */}
@@ -47,9 +75,9 @@ const Page = () => {
             <h1 className="text-4xl font-bold text-center mb-6 bg-clip-text text-white/80">
               Register
             </h1>
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-300">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-300" >
                   Full Name
                 </label>
                 <input
@@ -57,6 +85,8 @@ const Page = () => {
                   id="name"
                   className="mt-1 block w-full px-4 py-2 text-sm bg-white/10 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                   placeholder="Enter your full name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
                 />
               </div>
 
@@ -69,6 +99,8 @@ const Page = () => {
                   id="email"
                   className="mt-1 block w-full px-4 py-2 text-sm bg-white/10 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                   placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
                 />
               </div>
 
@@ -81,6 +113,8 @@ const Page = () => {
                   id="password"
                   className="mt-1 block w-full px-4 py-2 text-sm bg-white/10 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                   placeholder="Enter your password"
+                  value={formData.password}
+                  onChange={(e) => setFormData({...formData, password: e.target.value})}
                 />
               </div>
 
@@ -93,9 +127,11 @@ const Page = () => {
                   id="confirmPassword"
                   className="mt-1 block w-full px-4 py-2 text-sm bg-white/10 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                   placeholder="Confirm your password"
+                  value={formData.password_confirmation}
+                  onChange={(e) => setFormData({...formData, password_confirmation: e.target.value})}
                 />
               </div>
-
+              {error && <div className="error">{error}</div>}
               <button
                 type="submit"
                 className="w-full py-2.5 rounded-lg bg-purple-500 hover:bg-purple-600 text-white font-medium text-sm transition-all"
