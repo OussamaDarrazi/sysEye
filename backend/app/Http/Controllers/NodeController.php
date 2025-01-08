@@ -12,8 +12,9 @@ class NodeController extends Controller
      */
     public function index()
     {
-        //
-        return Node::all();
+         $user = auth('sanctum')->user();
+         $nodes = Node::where('user_id', $user->id)->get();
+         return $nodes;
     }
 
     /**

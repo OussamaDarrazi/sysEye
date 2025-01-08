@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import grid from '../../public/Grid.png'; // Adjust the import path as necessary
-import { useEffect, useState } from 'react';
+import grid from '../../public/Grid.png';
+import { Key, useEffect, useState } from 'react';
 import { AuthService } from '@/utils/auth';
 import { useRouter } from 'next/navigation';
 import { Mail, Calendar, Shield } from 'lucide-react';
@@ -10,11 +11,12 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Navbar } from "../../components/Navbar";
+import { api } from '../../utils/auth';
 
 export default function ProfilePage() {
   const router = useRouter();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [user, setUser] = useState<any>(null);
+  const [nodes, setNodes] = useState<any>([]);
 
   useEffect(() => {
     const userData = AuthService.getUser();
@@ -23,23 +25,44 @@ export default function ProfilePage() {
       return;
     }
     setUser(userData);
+
+    // Fetch nodes
+    api.get('/nodes')
+      .then(response => {
+        setNodes(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching nodes:', error);
+      });
   }, [router]);
+
+  const formatDate = (date: Date) => {
+    const now = new Date();
+    const yesterday = new Date(now);
+    yesterday.setDate(yesterday.getDate() - 1);
+    
+    const dateToFormat = new Date(date);
+    
+    if (dateToFormat.toDateString() === now.toDateString()) {
+      return `Today at ${dateToFormat.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`;
+    } else if (dateToFormat.toDateString() === yesterday.toDateString()) {
+      return `Yesterday at ${dateToFormat.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`;
+    } else {
+      return `${dateToFormat.toLocaleDateString()} at ${dateToFormat.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`;
+    }
+  };
 
   if (!user) return null;
 
   return (
     <div className="min-h-screen bg-[#121212] text-white relative">
-      {/* Background */}
-      <div
-        className="absolute inset-0 z-0 opacity-30"
-        style={{
-          backgroundImage: `url(${grid.src})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }}
-      ></div>
-      <svg
+      <div className="absolute inset-0 z-0 opacity-30" style={{
+        backgroundImage: `url(${grid.src})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}></div>
+            <svg
       xmlns="http://www.w3.org/2000/svg"
       width="1728"
       height="1180"
@@ -84,80 +107,78 @@ export default function ProfilePage() {
         </radialGradient>
       </defs>
     </svg>
-
-      {/* Content */}
+      
       <div className="relative z-10 min-h-screen bg-transparent text-white pt-20 px-4">
         <Navbar />
         <div className="max-w-2xl mx-auto">
-          <Card className="bg-[#121212]/95 border-white/10 shadow-lg">
+          <Card className="bg-[#121212]/95 border-white/20 shadow-lg hover:border-white/30 transition-all">
             <CardHeader className="pb-4">
               <div className="flex items-center space-x-4">
-                <Avatar className="h-20 w-20 border-2 border-white/10">
-                  <AvatarFallback className="bg-white/5 text-white text-xl">
+                <Avatar className="h-20 w-20 border-2 border-purple-400">
+                  <AvatarFallback className="bg-white/10 text-purple-400 text-xl">
                     {user.name?.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <div>
                   <CardTitle className="text-2xl font-bold text-white">{user.name}</CardTitle>
-                  <Badge variant="outline" className="mt-2 text-white/70 border-white/10">
+                  <Badge variant="outline" className="mt-2 text-purple-400 border-purple-400 bg-white/5">
                     Admin
                   </Badge>
                 </div>
               </div>
             </CardHeader>
 
-            <Separator className="bg-white/10" />
+            <Separator className="bg-white/20" />
 
             <CardContent className="pt-6 space-y-6">
-              {/* User Information */}
               <div className="space-y-4">
                 <div className="flex items-center space-x-3 text-white/70">
-                  <Mail className="h-5 w-5" />
+                  <Mail className="h-5 w-5 text-white" />
                   <span>{user.email}</span>
                 </div>
 
                 <div className="flex items-center space-x-3 text-white/70">
-                  <Calendar className="h-5 w-5" />
-                  <span>Joined {new Date(user.created_at).toLocaleDateString()}</span>
+                  <Calendar className="h-5 w-5 text-white" />
+                  <span>Joined {formatDate(new Date(user.created_at))}</span>
                 </div>
 
                 <div className="flex items-center space-x-3 text-white/70">
-                  <Shield className="h-5 w-5" />
+                  <Shield className="h-5 w-5 text-white" />
                   <span>
                     Account Status: <Badge className="ml-2 bg-green-500/10 text-green-500 hover:bg-green-500/20">Active</Badge>
                   </span>
                 </div>
               </div>
 
-              {/* Account Statistics */}
               <div className="grid grid-cols-2 gap-4 pt-4">
-                <Card className="bg-white/5 border-white/10">
+                <Card className="bg-white/5 border-white/20 hover:bg-white/10 transition-all">
                   <CardContent className="p-4">
-                    <div className="text-sm text-white/70">Total Nodes</div>
-                    <div className="text-2xl font-bold text-white mt-1">12</div>
+                    <div className="text-sm text-white">Total Nodes</div>
+                    <div className="text-2xl font-bold text-purple-400 mt-1">{nodes.length}</div>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white/5 border-white/10">
+                <Card className="bg-white/5 border-white/20 hover:bg-white/10 transition-all">
                   <CardContent className="p-4">
-                    <div className="text-sm text-white/70">Active Monitors</div>
-                    <div className="text-2xl font-bold text-white mt-1">8</div>
+                    <div className="text-sm text-white">Active Nodes</div>
+                    <div className="text-2xl font-bold text-purple-400 mt-1">
+                      {nodes.filter((node: { is_active: any; }) => node.is_active).length}
+                    </div>
                   </CardContent>
                 </Card>
               </div>
 
-              {/* Recent Activity */}
               <div className="pt-4">
                 <h3 className="text-lg font-semibold text-white mb-4">Recent Activity</h3>
                 <div className="space-y-4">
-                  <div className="bg-white/5 p-3 rounded-lg">
-                    <div className="text-sm text-white/70">Added new node: Server-01</div>
-                    <div className="text-xs text-white/50 mt-1">2 days ago</div>
-                  </div>
-                  <div className="bg-white/5 p-3 rounded-lg">
-                    <div className="text-sm text-white/70">Updated monitoring settings</div>
-                    <div className="text-xs text-white/50 mt-1">5 days ago</div>
-                  </div>
+                  {nodes.slice(0, 3).map((node: { name: string; created_at: string | number | Date; }, index: Key | null | undefined) => (
+                    <a href='/dashboard' key={index}><div  className="bg-white/5 p-3 rounded-lg border border-white/20 hover:bg-white/10 transition-all">
+                      <div className="text-sm text-white/70">Added new node: <span className="text-purple-400 font-bold">{node.name}</span></div>
+                      <div className="text-xs text-white/70 mt-1">
+                        {formatDate(new Date(node.created_at))}
+                      </div>
+                    </div></a>
+                  ))}
                 </div>
               </div>
             </CardContent>
