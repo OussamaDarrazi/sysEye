@@ -1,7 +1,39 @@
+"use client";
+import { use, useEffect, useState } from "react";
 import { Navbar } from "../../components/Navbar";
 import grid from "../../public/Grid.png";
+import { api } from "@/utils/auth";
+import { Node } from "@/app/types/Node";
+import NodeCard from "@/components/NodeCard";
+import {
+  Sidebar,
+  SidebarHeader,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 
 const Page = () => {
+  const [nodes, setNodes] = useState<Node[] | null>(null); // Array of Node or null
+  const [selectedNode, setSelectedNode] = useState<Node | null>(null); // Single Node or null
+
+  useEffect(() => {
+    api.get("/nodes").then((res) => {
+      console.log(res.data);
+      setNodes(res.data as Node[]);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (nodes !== null && nodes.length > 0) {
+      console.log(nodes[0].is_active);
+    }
+  }, [nodes]);
+
+  useEffect(() => {
+    if (selectedNode !== null) {
+      console.log(selectedNode);
+    }
+  }, [selectedNode]);
   return (
     <div className="min-h-screen bg-[#121212] text-white relative">
       {/* Background Image */}
@@ -43,24 +75,63 @@ const Page = () => {
 
             {/* List */}
             <ul className="flex-grow space-y-2 overflow-y-auto">
-              {["Node 1", "Node 2", "Node 3", "Node 4", "Node 5"].map(
-                (node, index) => (
-                  <li
-                    key={index}
-                    className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg cursor-pointer transition-all"
+              {nodes === null ? (
+                <div className="flex justify-center items-center h-full">
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
                   >
-                    {node}
-                  </li>
-                )
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8H4z"
+                    ></path>
+                  </svg>
+                </div>
+              ) : nodes.length === 0 ? (
+                <div className="text-center text-white">No nodes available</div>
+              ) : (
+                nodes.map((node, index) => (
+                  <NodeCard
+                    key={index}
+                    node={node}
+                    onSelect={(node: Node) => {
+                      setSelectedNode(node);
+                    }}
+                    isSelected={false}
+                  />
+                ))
               )}
             </ul>
           </aside>
 
           {/* Main Content */}
           <section className="flex-grow bg-white/5 backdrop-blur-lg border border-white/10 p-8 rounded-xl shadow-lg flex items-center justify-center">
-            <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
-              Choose a Node
-            </h2>
+            {selectedNode !== null ? (
+              <div className="flex flex-col items-center justify-center">
+                <h2 className="text-2xl font-bold">{selectedNode.name}</h2>
+                <p className="text-sm text-white/70">
+                  {selectedNode.is_active ? "Active" : "Inactive"}
+                </p>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center">
+                <h2 className="text-2xl font-bold">No Node Selected</h2>
+                <p className="text-sm text-white/70">
+                  Please select a node from the list.
+                </p>
+              </div>
+            )}
           </section>
         </main>
       </div>
