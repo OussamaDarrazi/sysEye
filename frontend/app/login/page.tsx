@@ -98,7 +98,7 @@ const Page = () => {
             </form>
 
             <p className="mt-4 text-center text-sm text-gray-400">
-              Don&apost have an account?{" "}
+              Don&apos;t have an account?{" "}
               <a href="/register" className="text-purple-500 hover:underline">
                 Sign up
               </a>

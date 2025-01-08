@@ -1,16 +1,11 @@
 "use client";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Navbar } from "../../components/Navbar";
 import grid from "../../public/Grid.png";
 import { api } from "@/utils/auth";
 import { Node } from "@/app/types/Node";
 import NodeCard from "@/components/NodeCard";
-import {
-  Sidebar,
-  SidebarHeader,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+
 
 const Page = () => {
   const [nodes, setNodes] = useState<Node[] | null>(null); // Array of Node or null

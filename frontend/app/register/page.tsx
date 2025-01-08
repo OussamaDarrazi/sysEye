@@ -68,7 +68,7 @@ const Page = () => {
         </Link>
       </div>
       {/* Content */}
-      <div className="relative z-10">
+      <div className="relative z-10 top-10">
 
         <main className="container mx-auto px-4 pt-32 pb-16">
           <div className="max-w-md mx-auto bg-white/5 backdrop-blur-lg border border-white/10 p-8 rounded-xl shadow-lg">
