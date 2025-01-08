@@ -27,7 +27,7 @@ const Page = () => {
     }
   };
     return (
-        <div className="min-h-screen bg-[#121212] text-white relative">
+    <div className="min-h-screen bg-[#121212] text-white relative">
       {/* Background Image */}
       <div
         className="absolute inset-0 z-0 opacity-30"
