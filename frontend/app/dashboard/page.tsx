@@ -5,11 +5,30 @@ import grid from "../../public/Grid.png";
 import { api } from "@/utils/auth";
 import { Node } from "@/app/types/Node";
 import NodeCard from "@/components/NodeCard";
-
+import NodeMetricsDashboard from "@/components/NodeMetricsDashboard";
+import { NodeMetrics } from "../types/NodeMetrics";
 
 const Page = () => {
   const [nodes, setNodes] = useState<Node[] | null>(null); // Array of Node or null
   const [selectedNode, setSelectedNode] = useState<Node | null>(null); // Single Node or null
+  const [metrics, setMetrics] = useState<NodeMetrics[]>([]); // Metrics or null
+
+  useEffect(() => {
+    if (selectedNode !== null) {
+      api
+        .get(`/nodes/${selectedNode.id}/metrics`)
+        .then((res) => {
+          console.log("fetching metrics");
+          console.log(res.data);
+          setMetrics(res.data as NodeMetrics[]);
+        })
+        .catch((error) => {
+          console.error("Error fetching metrics:", error);
+        });
+    } else {
+      setMetrics([]); // Clear metrics if no node is selected
+    }
+  }, [selectedNode]);
 
   useEffect(() => {
     api.get("/nodes").then((res) => {
@@ -29,6 +48,14 @@ const Page = () => {
       console.log(selectedNode);
     }
   }, [selectedNode]);
+
+  useEffect(() => {
+    if (metrics !== null && metrics.length > 0) {
+      console.log("the metrics changed");
+      console.log(metrics[0].id);
+    }
+  }, [metrics]);
+
   return (
     <div className="min-h-screen bg-[#121212] text-white relative">
       {/* Background Image */}
@@ -56,7 +83,7 @@ const Page = () => {
       <div className="relative z-10">
         <Navbar />
 
-        <main className="container mx-auto px-4 py-16 flex gap-6">
+        <main className="container mx-auto px-4 py-20 flex gap-6">
           {/* Sidebar */}
           <aside className="w-1/4 min-h-[80vh] bg-white/10 backdrop-blur-lg border border-white/10 rounded-xl shadow-lg p-4 flex flex-col space-y-4">
             {/* Search Bar */}
@@ -103,7 +130,9 @@ const Page = () => {
                     onSelect={(node: Node) => {
                       setSelectedNode(node);
                     }}
-                    isSelected={false}
+                    isSelected={
+                      selectedNode !== null && selectedNode.id === node.id
+                    }
                   />
                 ))
               )}
@@ -111,14 +140,9 @@ const Page = () => {
           </aside>
 
           {/* Main Content */}
-          <section className="flex-grow bg-white/5 backdrop-blur-lg border border-white/10 p-8 rounded-xl shadow-lg flex items-center justify-center">
+          <section className="flex-grow bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl shadow-lg flex items-center justify-center">
             {selectedNode !== null ? (
-              <div className="flex flex-col items-center justify-center">
-                <h2 className="text-2xl font-bold">{selectedNode.name}</h2>
-                <p className="text-sm text-white/70">
-                  {selectedNode.is_active ? "Active" : "Inactive"}
-                </p>
-              </div>
+              <NodeMetricsDashboard metricsArray={metrics} />
             ) : (
               <div className="flex flex-col items-center justify-center">
                 <h2 className="text-2xl font-bold">No Node Selected</h2>

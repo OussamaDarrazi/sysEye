@@ -14,7 +14,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import { NodeMetrics } from "../types/NodeMetrics";
+import { NodeMetrics } from "@/app/types/NodeMetrics";
 import {
   Select,
   SelectTrigger,
