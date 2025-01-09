@@ -22,7 +22,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface NodeMetricsDashboardProps {
   metricsArray: NodeMetrics[];
