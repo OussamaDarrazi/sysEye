@@ -1,34 +1,45 @@
-'use client';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+"use client";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 import { api } from "@/utils/auth";
+import { useRouter } from "next/navigation";
 
-const AddConnection: React.FC = () => {
+interface AddConnectionProps {
+  onAdd?: () => void;
+}
+
+const AddConnection: React.FC<AddConnectionProps> = ({ onAdd }) => {
   const [formData, setFormData] = useState({
-    name: '',
-    ip: '',
-    exporter_port: '',
+    name: "",
+    ip: "",
+    exporter_port: "",
     is_active: true,
-    probe_interval: '10', // Default 10 minutes
+    probe_interval: "10", // Default 10 minutes
     deactivate_on_unreachable: true,
     notify_on_unreachable: true,
-    retries: '3', // Default 3 retries
+    retries: "3", // Default 3 retries
   });
-  
 
   const handleSubmit = async () => {
     try {
-      const response = await api.post('/nodes', formData);
+      const response = await api.post("/nodes", formData);
       console.log(formData);
-      if(response.status === 201) {
-        console.log('Connection added successfully');
+      if (response.status === 201) {
+        console.log("Connection added successfully");
+        onAdd?.();
       }
     } catch (error) {
-      console.error('Failed to add connection:', error);
+      console.error("Failed to add connection:", error);
     }
   };
 
@@ -53,37 +64,49 @@ const AddConnection: React.FC = () => {
         <div className="grid gap-4 py-4">
           {/* Basic Info */}
           <div className="grid gap-2">
-            <Label htmlFor="name" className="text-white">Name</Label>
-            <Input 
-              id="name" 
+            <Label htmlFor="name" className="text-white">
+              Name
+            </Label>
+            <Input
+              id="name"
               placeholder="Connection name"
               value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
-              className="bg-white/5 border-white/10 text-white focus:border-white/20" 
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+              className="bg-white/5 border-white/10 text-white focus:border-white/20"
             />
           </div>
 
           {/* Connection Details */}
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="ip" className="text-white">IP Address</Label>
-              <Input 
-                id="ip" 
+              <Label htmlFor="ip" className="text-white">
+                IP Address
+              </Label>
+              <Input
+                id="ip"
                 placeholder="192.168.1.1"
                 value={formData.ip}
-                onChange={(e) => setFormData({...formData, ip: e.target.value})}
-                className="bg-white/5 border-white/10 text-white focus:border-white/20" 
+                onChange={(e) =>
+                  setFormData({ ...formData, ip: e.target.value })
+                }
+                className="bg-white/5 border-white/10 text-white focus:border-white/20"
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="exporter_port" className="text-white">Exporter Port</Label>
-              <Input 
-                id="exporter_port" 
+              <Label htmlFor="exporter_port" className="text-white">
+                Exporter Port
+              </Label>
+              <Input
+                id="exporter_port"
                 placeholder="8080"
                 pattern="[0-9]*"
                 value={formData.exporter_port}
-                onChange={(e) => setFormData({...formData, exporter_port: e.target.value})}
-                className="bg-white/5 border-white/10 text-white focus:border-white/20" 
+                onChange={(e) =>
+                  setFormData({ ...formData, exporter_port: e.target.value })
+                }
+                className="bg-white/5 border-white/10 text-white focus:border-white/20"
               />
             </div>
           </div>
@@ -91,53 +114,71 @@ const AddConnection: React.FC = () => {
           {/* Monitoring Settings */}
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="probe_interval" className="text-white">Probe Interval (minutes)</Label>
-              <Input 
-                id="probe_interval" 
+              <Label htmlFor="probe_interval" className="text-white">
+                Probe Interval (minutes)
+              </Label>
+              <Input
+                id="probe_interval"
                 type="number"
                 placeholder="60"
                 value={formData.probe_interval}
-                onChange={(e) => setFormData({...formData, probe_interval: e.target.value})}
-                className="bg-white/5 border-white/10 text-white focus:border-white/20" 
+                onChange={(e) =>
+                  setFormData({ ...formData, probe_interval: e.target.value })
+                }
+                className="bg-white/5 border-white/10 text-white focus:border-white/20"
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="retries" className="text-white">Retries</Label>
-              <Input 
-                id="retries" 
+              <Label htmlFor="retries" className="text-white">
+                Retries
+              </Label>
+              <Input
+                id="retries"
                 type="number"
                 placeholder="3"
                 value={formData.retries}
-                onChange={(e) => setFormData({...formData, retries: e.target.value})}
-                className="bg-white/5 border-white/10 text-white focus:border-white/20" 
+                onChange={(e) =>
+                  setFormData({ ...formData, retries: e.target.value })
+                }
+                className="bg-white/5 border-white/10 text-white focus:border-white/20"
               />
             </div>
           </div>
 
           {/* Toggle Settings */}
           <div className="space-y-4">
-            
             <div className="flex items-center justify-between">
-              <Label htmlFor="deactivate_on_unreachable" className="text-white">Deactivate When Unreachable</Label>
-              <Switch 
+              <Label htmlFor="deactivate_on_unreachable" className="text-white">
+                Deactivate When Unreachable
+              </Label>
+              <Switch
                 id="deactivate_on_unreachable"
                 checked={formData.deactivate_on_unreachable}
-                onCheckedChange={(checked) => setFormData({...formData, deactivate_on_unreachable: checked})}
+                onCheckedChange={(checked) =>
+                  setFormData({
+                    ...formData,
+                    deactivate_on_unreachable: checked,
+                  })
+                }
               />
             </div>
 
             <div className="flex items-center justify-between">
-              <Label htmlFor="notify_on_unreachable" className="text-white">Notify When Unreachable</Label>
-              <Switch 
+              <Label htmlFor="notify_on_unreachable" className="text-white">
+                Notify When Unreachable
+              </Label>
+              <Switch
                 id="notify_on_unreachable"
                 checked={formData.notify_on_unreachable}
-                onCheckedChange={(checked) => setFormData({...formData, notify_on_unreachable: checked})}
+                onCheckedChange={(checked) =>
+                  setFormData({ ...formData, notify_on_unreachable: checked })
+                }
               />
             </div>
           </div>
         </div>
 
-        <Button 
+        <Button
           onClick={handleSubmit}
           className="w-full bg-purple-500 hover:bg-white/20 text-white"
         >

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MetricsSample;
 use App\Models\Node;
+use App\Services\GlancesMetricsSampler;
 use Illuminate\Http\Request;
 
 class NodeController extends Controller
@@ -81,5 +83,13 @@ class NodeController extends Controller
         }else{
             return response()->json(["message" => "Error deleting node"], 500);
         }
+    }
+
+    public function probe(Node $node)
+    {
+        $sampler = new GlancesMetricsSampler($node);
+        $metrics = $sampler->fetchMetrics();
+        MetricsSample::create($metrics);
+        return $metrics;
     }
 }

@@ -1,23 +1,30 @@
-import React, { useState } from 'react';
-import NodeCard from './NodeCard';
-import { Node } from '@/app/types/Node';
-import AddConnection from './AddConnection';
+import React, { useState } from "react";
+import NodeCard from "./NodeCard";
+import { Node } from "@/app/types/Node";
+import AddConnection from "./AddConnection";
 
 interface SidebarProps {
   nodes: Node[] | null;
   selectedNode: Node | null;
   setSelectedNode: (node: Node) => void;
+  onNodeSave?: (node?: Node) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ nodes, selectedNode, setSelectedNode }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  console.log(nodes);
+const Sidebar: React.FC<SidebarProps> = ({
+  nodes,
+  selectedNode,
+  setSelectedNode,
+  onNodeSave,
+}) => {
+  const [searchTerm, setSearchTerm] = useState("");
   // Filter nodes based on search term
-  const filteredNodes = nodes?.filter((node: { name: string; }) =>
+  const filteredNodes = nodes?.filter((node: { name: string }) =>
     node.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
   console.log(filteredNodes);
-  const handleSearch = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+  const handleSearch = (event: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
     setSearchTerm(event.target.value);
   };
 
@@ -62,22 +69,24 @@ const Sidebar: React.FC<SidebarProps> = ({ nodes, selectedNode, setSelectedNode 
         ) : filteredNodes?.length === 0 ? (
           <div className="text-center text-white">No matching nodes found</div>
         ) : (
-            filteredNodes?.map((node: Node) => (
-                <NodeCard
-                  key={node.id} // Use a unique identifier
-                  node={node}
-                  onSelect={(node) => {
-                    setSelectedNode(node);
-                  }}
-                  isSelected={selectedNode !== null && selectedNode.id === node.id}
-                />
-              ))
-              
+          filteredNodes?.map((node: Node) => (
+            <NodeCard
+              key={node.id} // Use a unique identifier
+              node={node}
+              onSelect={(node) => {
+                setSelectedNode(node);
+              }}
+              isSelected={selectedNode !== null && selectedNode.id === node.id}
+              onSave={(node) => {
+                onNodeSave?.(node);
+              }}
+            />
+          ))
         )}
       </ul>
       {/* Add Connection Button */}
       <div className="flex justify-center pt-4 border-t border-white/10">
-        <AddConnection />
+        <AddConnection onAdd={onNodeSave} />
       </div>
     </aside>
   );

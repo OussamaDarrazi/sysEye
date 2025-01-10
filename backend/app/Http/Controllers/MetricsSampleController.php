@@ -14,7 +14,7 @@ class MetricsSampleController extends Controller
     public function index(Node $node)
     {
         // Return all metrics for the specified node
-        return $node->metricSamples;
+        return $node->metricSamples ?? [];
     }
 
     /**

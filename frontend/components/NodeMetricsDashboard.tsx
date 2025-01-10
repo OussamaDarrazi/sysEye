@@ -23,9 +23,11 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
+import { Button } from "./ui/button";
 
 interface NodeMetricsDashboardProps {
   metricsArray: NodeMetrics[];
+  onProbe?: () => void;
 }
 
 const formatDate = (isoString: string): string => {
@@ -44,7 +46,10 @@ const formatDate = (isoString: string): string => {
   return new Intl.DateTimeFormat("en-US", options).format(date);
 };
 
-const NodeMetricsDashboard = ({ metricsArray }: NodeMetricsDashboardProps) => {
+const NodeMetricsDashboard = ({
+  metricsArray,
+  onProbe,
+}: NodeMetricsDashboardProps) => {
   const [metrics, setMetrics] = useState<NodeMetrics[]>([]);
 
   const [selectedMetrics, setSelectedMetrics] = useState<NodeMetrics>();
@@ -57,7 +62,7 @@ const NodeMetricsDashboard = ({ metricsArray }: NodeMetricsDashboardProps) => {
   return (
     <ScrollArea className="h-full w-full">
       <div className="grid grid-cols-12 gap-4 p-4">
-        <div className="col-span-12">
+        <div className="col-span-12 flex justify-between items-center">
           <Select
             value={selectedMetrics?.id}
             onValueChange={(selectedMetrics_id) => {
@@ -81,6 +86,7 @@ const NodeMetricsDashboard = ({ metricsArray }: NodeMetricsDashboardProps) => {
               ))}
             </SelectContent>
           </Select>
+          <Button onClick={onProbe}>Probe</Button>
         </div>
         {/* System Info Card */}
         <Card className="col-span-12 bg-white/5 backdrop-blur-xl border border-purple-500/20 shadow-[0_0_15px_rgba(168,85,247,0.15)] transition-all duration-300 hover:shadow-[0_0_30px_rgba(168,85,247,0.3)] hover:border-purple-500/40 hover:-translate-y-1">

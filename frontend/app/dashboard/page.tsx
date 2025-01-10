@@ -11,8 +11,37 @@ import Sidebar from "@/components/Sidebar";
 const Page = () => {
   const [nodes, setNodes] = useState<Node[] | null>(null); // Array of Node or null
   const [selectedNode, setSelectedNode] = useState<Node | null>(null); // Single Node or null
-  const [metrics, setMetrics] = useState<NodeMetrics[]>([]); // Metrics or null
-  
+  const [metrics, setMetrics] = useState<NodeMetrics[]>([]);
+
+  const fetchNodes = async () => {
+    try {
+      const response = await api.get("/nodes");
+      setNodes(response.data as Node[]);
+    } catch (error) {
+      console.error("Failed to fetch nodes:", error);
+    }
+  };
+
+  const fetchMetrics = async (node: Node) => {
+    try {
+      const response = await api.get(`/nodes/${node.id}/metrics`);
+      setMetrics(response.data as NodeMetrics[]);
+    } catch (error) {
+      console.error("Failed to fetch metrics:", error);
+    }
+  };
+
+  const probe = async (node: Node) => {
+    try {
+      const response = await api.get(`/nodes/${node.id}/probe`);
+      console.log("Probe response:", response.data);
+      fetchMetrics(node);
+    } catch (error) {
+      console.error("Failed to probe node:", error);
+    }
+  };
+
+  //fetch the metrics based on the selected node
   useEffect(() => {
     if (selectedNode !== null) {
       api
@@ -30,31 +59,10 @@ const Page = () => {
     }
   }, [selectedNode]);
 
+  //fetch the nodes
   useEffect(() => {
-    api.get("/nodes").then((res) => {
-      console.log(res.data);
-      setNodes(res.data as Node[]);
-    });
+    fetchNodes();
   }, []);
-
-  useEffect(() => {
-    if (nodes !== null && nodes.length > 0) {
-      console.log(nodes[0].is_active);
-    }
-  }, [nodes]);
-
-  useEffect(() => {
-    if (selectedNode !== null) {
-      console.log(selectedNode);
-    }
-  }, [selectedNode]);
-
-  useEffect(() => {
-    if (metrics !== null && metrics.length > 0) {
-      console.log("the metrics changed");
-      console.log(metrics[0].id);
-    }
-  }, [metrics]);
 
   return (
     <div className="min-h-screen bg-[#121212] text-white relative">
@@ -85,12 +93,26 @@ const Page = () => {
 
         <main className="container mx-auto px-4 py-20 flex gap-6">
           {/* Sidebar */}
-          <Sidebar nodes={nodes} selectedNode={selectedNode} setSelectedNode={setSelectedNode} />
+          <Sidebar
+            nodes={nodes}
+            selectedNode={selectedNode}
+            setSelectedNode={setSelectedNode}
+            onNodeSave={fetchNodes}
+          />
 
           {/* Main Content */}
           <section className="flex-grow bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl shadow-lg flex items-center justify-center">
             {selectedNode !== null ? (
-              <NodeMetricsDashboard metricsArray={metrics} />
+              metrics.length > 0 ? (
+                <NodeMetricsDashboard
+                  metricsArray={metrics}
+                  onProbe={() => {
+                    probe(selectedNode);
+                  }}
+                />
+              ) : (
+                <h2 className="text-2xl font-bold">No Metrics to show</h2>
+              )
             ) : (
               <div className="flex flex-col items-center justify-center">
                 <h2 className="text-2xl font-bold">No Node Selected</h2>

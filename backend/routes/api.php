@@ -17,6 +17,8 @@ Route::apiResource("nodes.metrics", MetricsSampleController::class)->only([
     'index', 'show'
 ]);
 
+Route::get("/nodes/{node}/probe", [NodeController::class, 'probe']);
+
 Route::get("/test", function(){
     Node::create([
         'name' => 'Test Node',
