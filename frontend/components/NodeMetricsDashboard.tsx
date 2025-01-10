@@ -28,6 +28,22 @@ interface NodeMetricsDashboardProps {
   metricsArray: NodeMetrics[];
 }
 
+const formatDate = (isoString: string): string => {
+  const date = new Date(isoString);
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    timeZoneName: "short",
+  };
+
+  return new Intl.DateTimeFormat("en-US", options).format(date);
+};
+
 const NodeMetricsDashboard = ({ metricsArray }: NodeMetricsDashboardProps) => {
   const [metrics, setMetrics] = useState<NodeMetrics[]>([]);
 
@@ -36,7 +52,7 @@ const NodeMetricsDashboard = ({ metricsArray }: NodeMetricsDashboardProps) => {
     setMetrics(metricsArray);
   }, [metricsArray]);
   useEffect(() => {
-    setSelectedMetrics(metrics[0]);
+    setSelectedMetrics(metrics[metrics.length - 1]);
   }, [metrics]);
   return (
     <ScrollArea className="h-full w-full">
@@ -60,7 +76,7 @@ const NodeMetricsDashboard = ({ metricsArray }: NodeMetricsDashboardProps) => {
                   key={metric.sampleTime}
                   onSelect={() => setSelectedMetrics(metric)}
                 >
-                  {metric.sampleTime}
+                  {formatDate(metric.sampleTime)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -74,7 +90,7 @@ const NodeMetricsDashboard = ({ metricsArray }: NodeMetricsDashboardProps) => {
               System Information
             </CardTitle>
             <span className="text-sm text-purple-400/70">
-              hostname.example.com
+              {selectedMetrics?.systemInfo.hostname}
             </span>
           </CardHeader>
           <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
