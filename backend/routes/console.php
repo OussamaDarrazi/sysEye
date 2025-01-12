@@ -34,7 +34,7 @@ foreach($nodes as $node){
                     $node->update(['is_active' => false]);
                 }
                 if($node->notify_on_unreachable){
-                    Mail::to("oussama@mail.com")->send(new UnreachableNodeMail(["node"=>$node]));
+                    Mail::to($node->user->email)->send(new UnreachableNodeMail(["node"=>$node]));
                 }
             }
         }
