@@ -41,7 +41,7 @@ class UnreachableNodeMail extends Mailable
     {
         return new Content(
             markdown: 'emails.unreachable-node',
-            with: $this->data,
+            with: $this->data
         );
     }
 

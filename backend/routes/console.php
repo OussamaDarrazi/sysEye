@@ -20,6 +20,9 @@ foreach($nodes as $node){
     // Add your code here
     Schedule::call(
         function () use ($node) {
+            if(!$node->is_active){
+                return;
+            }
             $sampler = new GlancesMetricsSampler($node);
             try {
                 $metrics = $sampler->fetchMetrics();
@@ -29,6 +32,9 @@ foreach($nodes as $node){
                 echo( "Node unreachable: " . $e->getMessage() . PHP_EOL);
                 if($node->deactivate_on_unreachable){
                     $node->update(['is_active' => false]);
+                }
+                if($node->notify_on_unreachable){
+                    Mail::to("oussama@mail.com")->send(new UnreachableNodeMail(["node"=>$node]));
                 }
             }
         }
